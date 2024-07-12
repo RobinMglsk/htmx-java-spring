@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+
+    <link rel="stylesheet" href="https://the.missing.style/v0.2.0/missing.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <main>
+
+        <header th:replace="~{commons :: header}"></header>
+        <!-- <div th:replace="~{commons :: flash}"></div> -->
+
+
+        <h1 th:text="${status}"></h1>
+        <p th:text="${message}">The page you are looking for might have been removed, had its name changed, or is
+            temporarily unavailable.
+        </p>
+        <a th:href="@{/}">Go to Homepage</a>
+
+
+    </main>
+</body>
+
+</html>

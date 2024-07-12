@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Create</title>
+
+    <link rel="stylesheet" href="https://the.missing.style/v0.2.0/missing.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <main>
+
+        <header th:replace="~{commons :: header}"></header>
+        <div th:replace="~{commons :: flash}"></div>
+
+        <form th:action="@{/contacts/new}" th:object="${contact}" method="post">
+            <fieldset>
+                <legend>Contact Values</legend>
+                <p>
+                    <label for="email">Email</label>
+                    <input name="email" id="email" type="email" placeholder="Email" th:value="*{email}" />
+                    <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                </p>
+                <p>
+                    <label for="firstName">First Name</label>
+                    <input name="firstName" id="firstName" type="text" placeholder="First Name"
+                        th:value="*{firstName}" />
+                    <span class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                </p>
+                <p>
+                    <label for="lastName">Last Name</label>
+                    <input name="lastName" id="lastName" type="text" placeholder="Last Name" th:value="*{lastName}" />
+                    <span class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                </p>
+                <p>
+                    <label for="phone">Phone</label>
+                    <input name="phone" id="phone" type="text" placeholder="Phone" th:value="*{phone}" />
+                    <span class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+                </p>
+                <button>Save</button>
+
+            </fieldset>
+        </form>
+
+        <p>
+            <a href="/contacts">Back</a>
+        </p>
+    </main>
+</body>
+
+</html>

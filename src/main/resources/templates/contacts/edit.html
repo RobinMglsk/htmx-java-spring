@@ -46,6 +46,7 @@
               th:value="*{email}"
               th:hx-get="@{/contacts/{contactId}/email(contactId=${contact.id})}"
               hx-target="next .error"
+              hx-trigger="change, keyup delay:200ms changed"
             />
             <span class="error">
               <span

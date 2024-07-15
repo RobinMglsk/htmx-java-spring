@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -59,6 +60,18 @@ public class ContactController {
         return "contacts/new";
     }
 
+    @GetMapping(path = "/new/email", produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody()
+    public String validateNewEmailAddress(@RequestParam(value = "email", required = true) String email) {
+        Boolean exists = this.contactsRepository.existsByEmail(email);
+
+        if(exists){
+            return "This email must be unique";
+        }
+
+        return "";
+    }
+
     @PostMapping(path = "/new", produces = MediaType.TEXT_HTML_VALUE, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String processNewContactForm(@Validated({CreateGroup.class, Default.class}) @ModelAttribute Contact contact, BindingResult bindingResult,
             Model model, RedirectAttributes redirectAttributes) {
@@ -86,16 +99,15 @@ public class ContactController {
     }
 
     @GetMapping(path = "/{id}/email", produces = MediaType.TEXT_HTML_VALUE)
-    public String validateEmailAddress(@PathVariable("id") long id, @RequestParam(value = "email", required = true) String email, Model model) {
-        Optional<Contact> contact = this.contactsRepository.findById(id);
+    @ResponseBody()
+    public String validateEditEmailAddress(@PathVariable("id") long id, @RequestParam(value = "email", required = true) String email) {
+        Boolean exists = this.contactsRepository.existsByEmailAndIdNot(email, id);
 
-        if(contact.isEmpty()){
-            throw new NotFoundException("Contact not found");
+        if(exists){
+            return "This email must be unique";
         }
 
-        model.addAttribute("contact", contact.get());
-
-        return "contacts/details";
+        return "";
     }
 
     @GetMapping(path = "/{id}/edit", produces = MediaType.TEXT_HTML_VALUE)

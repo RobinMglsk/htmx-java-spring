@@ -36,12 +36,16 @@
               type="email"
               placeholder="Email"
               th:value="*{email}"
+              th:hx-get="@{/contacts/new/email(contactId=${contact.id})}"
+              hx-target="next .error"
+              hx-trigger="change, keyup delay:200ms changed"
             />
-            <span
-              class="error"
-              th:if="${#fields.hasErrors('email')}"
-              th:errors="*{email}"
-            ></span>
+            <span class="error">
+              <span
+                th:if="${#fields.hasErrors('email')}"
+                th:errors="*{email}"
+              ></span>
+            </span>
           </p>
           <p>
             <label for="firstName">First Name</label>

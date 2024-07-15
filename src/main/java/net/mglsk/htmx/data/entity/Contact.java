@@ -11,11 +11,16 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.ToString;
+import net.mglsk.htmx.data.validation.ContactUniqueEmail;
+import net.mglsk.htmx.data.validation.ContactUniqueEmailExceptCurrent;
+import net.mglsk.htmx.data.validation.groups.CreateGroup;
+import net.mglsk.htmx.data.validation.groups.UpdateGroup;
 
 @Entity
 @Data
 @ToString
 @Table(name = "contacts")
+@ContactUniqueEmailExceptCurrent(idField = "id", groups = UpdateGroup.class)
 public class Contact {
     @Id
     @Column(name = "id")
@@ -37,8 +42,9 @@ public class Contact {
     @Size(min = 10, message = "Phone number should be atleast 10 characters")
     private String phone;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @NotEmpty(message = "Email is required")
     @Email(message = "Email should be valid")
+    @ContactUniqueEmail(groups = CreateGroup.class)
     private String email;
 }

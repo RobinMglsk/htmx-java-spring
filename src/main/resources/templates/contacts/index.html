@@ -1,55 +1,67 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contacts</title>
 
-    <link rel="stylesheet" href="https://the.missing.style/v0.2.0/missing.min.css">
-    <link rel="stylesheet" href="/static/style.css">
-</head>
+    <link rel="stylesheet" href="/static/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/missing.css@1.1.2/dist/missing.min.css"
+      integrity="sha384-fZrde2RUAJaQbjI1/XiJmfPWyrv5awDSR64gM3lJz73T3B1Up8lhRsjemC337rRP"
+      crossorigin="anonymous"
+    />
 
-<body>
+    <script
+      src="https://unpkg.com/htmx.org@2.0.1"
+      integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body hx-boost="true">
     <main>
+      <header th:replace="~{commons :: header}"></header>
+      <div th:replace="~{commons :: flash}"></div>
 
-        <header th:replace="~{commons :: header}"></header>
-        <div th:replace="~{commons :: flash}"></div>
+      <form action="/contacts" method="get" class="tool-bar">
+        <label for="search">Search Term</label>
+        <input id="search" type="search" name="q" th:value="*{q}" />
+        <input type="submit" value="Search" />
+      </form>
 
+      <table class="width:100%">
+        <thead>
+          <tr>
+            <th>First</th>
+            <th>Last</th>
+            <th>Phone</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="contact : ${contacts}">
+            <td th:text="${contact.firstName}"></td>
+            <td th:text="${contact.lastName}"></td>
+            <td th:text="${contact.phone}"></td>
+            <td th:text="${contact.email}"></td>
+            <td>
+              <a
+                th:href="@{/contacts/{contactId}/edit(contactId=${contact.id})}"
+                >Edit</a
+              >
+              <a th:href="@{/contacts/{contactId}(contactId=${contact.id})}"
+                >View</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-        <form action="/contacts" method="get" class="tool-bar">
-            <label for="search">Search Term</label>
-            <input id="search" type="search" name="q" th:value="*{q}" />
-            <input type="submit" value="Search" />
-        </form>
-
-        <table class="width:100%">
-            <thead>
-                <tr>
-                    <th>First</th>
-                    <th>Last</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="contact : ${contacts}">
-                    <td th:text="${contact.firstName}"></td>
-                    <td th:text="${contact.lastName}"></td>
-                    <td th:text="${contact.phone}"></td>
-                    <td th:text="${contact.email}"></td>
-                    <td>
-                        <a th:href="@{/contacts/{contactId}/edit(contactId=${contact.id})}">Edit</a>
-                        <a th:href="@{/contacts/{contactId}(contactId=${contact.id})}">View</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p>
-            <a href="/contacts/new">Add Contact</a>
-        </p>
+      <p>
+        <a th:href="@{/contacts/new}">Add Contact</a>
+      </p>
     </main>
-</body>
-
+  </body>
 </html>

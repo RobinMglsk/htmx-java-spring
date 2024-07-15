@@ -1,21 +1,16 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
-
-<body>
-
+  <body>
     <header th:fragment="header">
-        <h1>
-            <all-caps>contacts.app</all-caps>
-            <sub-title>A Demo Contacts Application</sub-title>
-        </h1>
+      <h1>
+        <all-caps>contacts.app</all-caps>
+        <sub-title>A Demo Contacts Application</sub-title>
+      </h1>
     </header>
 
     <div th:fragment="flash">
-        <div class="flash" th:if="${message}" th:text="${message}"></div>
+      <div class="flash" th:if="${message}" th:text="${message}"></div>
     </div>
-
-
-</body>
-
+  </body>
 </html>

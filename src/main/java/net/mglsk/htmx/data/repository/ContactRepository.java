@@ -8,4 +8,7 @@ import net.mglsk.htmx.data.entity.Contact;
 
 public interface ContactRepository extends JpaRepository<Contact, Long> {
     List<Contact> findByFirstNameContainingOrLastNameContaining(String firstName, String lastName);
+
+    boolean existsByEmail(String email);
+    boolean existsByEmailAndIdNot(String email, Long id);
 }

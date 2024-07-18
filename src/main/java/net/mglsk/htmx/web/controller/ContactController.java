@@ -2,6 +2,7 @@ package net.mglsk.htmx.web.controller;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -40,14 +41,18 @@ public class ContactController {
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
-    public String contacts(@RequestParam(value = "q", required = false) String q, Model model) {
+    public String contacts(@RequestParam(value = "q", required = false) String q, @RequestParam(value = "page", required = false, defaultValue = "1") Integer page, Model model) {
+
+        page = page--;
+        page = page < 0 ? 0 : page;
 
         model.addAttribute("q", q);
+        model.addAttribute("page", page);
 
         if (StringUtils.hasText(q)) {
-            model.addAttribute("contacts", contactsRepository.findByFirstNameContainingOrLastNameContaining(q, q));
+            model.addAttribute("contacts", contactsRepository.findByFirstNameContainingOrLastNameContaining(q, q, PageRequest.of(page, 10)));
         } else {
-            model.addAttribute("contacts", contactsRepository.findAll());
+            model.addAttribute("contacts", contactsRepository.findAll(PageRequest.of(page, 10)));
         }
 
         return "contacts/index";
